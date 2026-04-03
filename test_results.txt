@@ -1,0 +1,3 @@
+Error: Cannot find module 'jsonwebtoken'
+Require stack:
+- C:\tt projects\mini project\connect\backend\test.js
