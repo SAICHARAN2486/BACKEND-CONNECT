@@ -8,6 +8,10 @@ const http = require('http');
 const { Server } = require('socket.io');
 const winston = require('winston');
 
+console.log('Starting server...');
+console.log('MONGO_URI:', process.env.MONGO_URI ? 'Set' : 'Not set');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
 // Configuration
 const app = express();
 const server = http.createServer(app);
@@ -70,9 +74,18 @@ app.get('/', (req, res) => {
 
 // Database Connection
 const PORT = process.env.PORT || 5000;
+console.log('Attempting to connect to MongoDB...');
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/careerconnect')
     .then(() => {
+        console.log('MongoDB Connected successfully');
         logger.info('MongoDB Connected');
-        server.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
+        server.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+            logger.info(`Server running on port ${PORT}`);
+        });
     })
-    .catch(err => logger.error('MongoDB connection error:', err));
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        logger.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
