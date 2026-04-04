@@ -8,6 +8,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const winston = require('winston');
 
+// Production deployment - April 4
 console.log('Starting server...');
 console.log('MONGO_URI:', process.env.MONGO_URI ? 'Set' : 'Not set');
 console.log('NODE_ENV:', process.env.NODE_ENV);
