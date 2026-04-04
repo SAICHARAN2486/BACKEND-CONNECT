@@ -2,20 +2,32 @@ const { translateText, generateAIResponse, generateCoverLetter } = require('../s
 
 exports.getVoiceAssistantResponse = async (req, res) => {
     try {
+        console.log('Voice Assistant Request Received');
         const { text, history } = req.body;
+        
         if (!text) {
             return res.status(400).json({ message: 'Text input is required' });
         }
 
-        const userTranslations = await translateText(text);
-        const aiResponseEnglish = await generateAIResponse(userTranslations.english, history);
-        const aiTranslations = await translateText(aiResponseEnglish);
+        console.log('User said:', text);
 
-        res.json({
-            user: userTranslations,
-            ai: aiTranslations
-        });
+        // Mock multilingual response (you can integrate real AI later)
+        setTimeout(() => {
+            res.json({
+                user: {
+                    telugu: "మీరు అడిగారు: " + text,
+                    english: "You asked: " + text,
+                    hindi: "आपने पूछा: " + text
+                },
+                ai: {
+                    telugu: "నేను మీ ప్రశ్నకు సహాయం చేస్తాను. దయచేసి మీ కెరీర్ గురించి మరింత సమాచారం తెలియజేండి.",
+                    english: "I'm here to help with your career. Please tell me more about your job search or skills.",
+                    hindi: "मैं आपके करियर में मदद करने के लिए हूं। कृपया अपनी नौकरी खोज या कौशल के बारे में और बताएं।"
+                }
+            });
+        }, 1000);
     } catch (error) {
+        console.error('Voice Assistant Error:', error);
         res.status(500).json({ message: error.message });
     }
 };
