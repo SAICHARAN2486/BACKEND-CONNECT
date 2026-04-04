@@ -22,20 +22,29 @@ exports.getVoiceAssistantResponse = async (req, res) => {
 
 exports.analyzeResume = async (req, res) => {
     try {
-        // Mock AI analysis logic
+        console.log('AI Analysis Request Received');
+        console.log('File:', req.file);
+        
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        // For now, return mock analysis (you can integrate real AI later)
         setTimeout(() => {
             res.json({
-                score: 82,
-                summary: "Highly skilled Frontend Developer with strong React and Tailwind CSS expertise.",
-                skills: ["React", "JavaScript", "TypeScript", "Tailwind CSS", "Node.js"],
+                score: 85,
+                summary: "Strong frontend developer with excellent React and modern JavaScript skills. Good foundation in web technologies and responsive design.",
+                skills: ["React", "JavaScript", "HTML", "CSS", "Tailwind CSS", "Git"],
                 suggestions: [
-                    "Add more details about AWS or Google Cloud experience.",
-                    "Quantify achievements in previous roles.",
-                    "Include a section for personal projects."
+                    "Add more specific project achievements with metrics",
+                    "Include experience with testing frameworks",
+                    "Highlight any backend or full-stack experience",
+                    "Add certifications or online courses completed"
                 ]
             });
         }, 2000);
     } catch (error) {
+        console.error('AI Analysis Error:', error);
         res.status(500).json({ message: error.message });
     }
 };

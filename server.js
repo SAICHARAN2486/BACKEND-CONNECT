@@ -7,11 +7,20 @@ const rateLimit = require('express-rate-limit');
 const http = require('http');
 const { Server } = require('socket.io');
 const winston = require('winston');
+const multer = require('multer');
 
 // Production deployment - April 4
 console.log('Starting server...');
 console.log('MONGO_URI:', process.env.MONGO_URI ? 'Set' : 'Not set');
 console.log('NODE_ENV:', process.env.NODE_ENV);
+
+// File upload configuration
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+});
 
 // Configuration
 const app = express();
@@ -61,6 +70,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
 app.use('/api/applications', require('./routes/applicationRoutes'));
+app.use('/api/ai/analyze-resume', upload.single('resume'), require('./routes/aiRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
