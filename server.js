@@ -15,6 +15,7 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 
 // Configuration
 const app = express();
+app.set('trust proxy', 1); // Trust Render.com proxy
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
